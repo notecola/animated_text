@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Numbers!</title>
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/base.js"></script>
+    <script src="js/commons.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        .alink:link {
+            color:#000000;
+            text-decoration: none;
+        }
+        .alink:active {
+            color:#000000;
+            text-decoration: none;
+        }
+        .alink:hover {
+            color:#000000;
+            text-decoration: none;
+        }
+        .alink:visited {
+            color:#000000;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    var blocks = null;
+    var gameInfo = GetNewGameInfo();
+    function StartGame()
+    {
+        gameInfo = GetNewGameInfo();
+        blocks = InitBlocks()
+    }
+    function OnNumberClick(a)
+    {
+        var val = a.text;
+        if (val == gameInfo.curNum)
+        {
+            ++gameInfo.curNum;
+        }
+        return false;
+    }
+
+</script>
+
+<div id="el1" style="left:10px; top: 10px; position:absolute; background-color: #FEFEF ">
+    Find: <span id="curNum"></span>
+    <BR>
+    <span id="curTime"> -- </span>
+    <BR>
+    <button onclick="StartGame();">Play again!</button>
+</div>
+
+    <script>
+
+        var timeDisplay  = document.getElementById("curTime");
+        var numDisplay  = document.getElementById("curNum");
+
+        var posX = 10;
+        function render() {
+            requestAnimationFrame(render);
+
+            if (!blocks) return;
+
+            for(var i = 0; i < blocks.length; ++i)
+            {
+                //i = Math.floor(Math.random() * blocks.length);
+                block = blocks[i];
+                block.Step();
+                if (block.IsFinished())
+                {
+                    block.Init();
+                }else
+                {
+                    //break;
+                }
+            }
+
+            UpdateTime(gameInfo);
+            timeDisplay.innerText = gameInfo.elapsed;
+            numDisplay.innerText = gameInfo.curNum;
+        }
+        render();
+    </script>
+
+</body>
+</html>
