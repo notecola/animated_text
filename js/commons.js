@@ -28,7 +28,8 @@ function InitBlocks()
         var node = CreateNode("block" + i, "blocks");
         //SetText(node, Math.random() * 100);
         //SetText(node, "<a class=alink onclick='OnNumberClick(this);' href='#'>" +  i + "</a>");
-        SetText(node, "<a class=alink onclick='OnNumberClick(this);' href='#'><img src='gif2.gif'/></a>");
+        //SetText(node, "<a class=alink onclick='OnNumberClick(this);' href='#'><img src='gif3.gif'/></a>");
+        SetText(node, "<input type=text value=" + i + "></input>");
         var ani = new RotateZoomAndMoveDownAnimation();
         ani.node = node;
         ani.Init();

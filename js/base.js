@@ -122,10 +122,10 @@ RotateZoomAndMoveDownAnimation.prototype.Init = function()
 
     this.rotateSpeed = 0.5 * (1 - Math.random() * 2);
     this.moveSpeed = Math.random() * 10;
-    this.scaleSpeedBase = (0.5 - Math.random()) / 50;
+    this.scaleSpeedBase = (0.5 - Math.random()) / 100;
     this.scaleSpeed = this.scaleSpeedBase;
     this.scaleMax = 1 + 1 * Math.random();
-    this.scaleMin = 0.5;
+    this.scaleMin = 0.2;
 
     var x = Math.floor(window.innerWidth * (0.9 * Math.random()));
     this.node.style.left = x  + 'px'; // show frame
