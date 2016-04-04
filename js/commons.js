@@ -1,9 +1,9 @@
-function CreateNode(id, classname)
+function CreateNode(id, htmltype, classname)
 {
-    var node = document.createElement('div');
+    var node = document.createElement(htmltype);
     node.id = id;
     node.className = classname;
-    node.style.position = "absolute";
+    //node.style.position = "absolute";
     node.appendChild(document.createTextNode(""));
     document.body.appendChild(node);
     return node;
@@ -20,17 +20,31 @@ function SetText(node, txt)
     }
 }
 
+function getOffset(el) {
+    el = el.getBoundingClientRect();
+    return {
+        left: el.left + window.scrollX,
+        top: el.top + window.scrollY
+    }
+}
+
 function InitBlocks()
 {
+    var tmpNodes = [];
+
     var animations = [];
-    for(var i = 0; i < 50; ++i)
-    {
-        var node = CreateNode("block" + i, "blocks");
-        //SetText(node, Math.random() * 100);
-        //SetText(node, "<a class=alink onclick='OnNumberClick(this);' href='#'>" +  i + "</a>");
-        //SetText(node, "<a class=alink onclick='OnNumberClick(this);' href='#'><img src='gif3.gif'/></a>");
-        SetText(node, "<input type=text value=" + i + "></input>");
-        var ani = new RotateZoomAndMoveDownAnimation();
+    var strText = document.getElementById("textsrc").innerText;
+    var finalStage = document.getElementById("finalstage");
+
+    for(var i = 0; i < strText.length; ++i){
+        var c = strText[i];
+
+        var node = CreateNode("block" + i, "span", "blocks");
+        SetText(node, c);
+        finalStage.appendChild(node);
+
+        var ani = new RotateZoomAndMoveToThePointAnimation();
+        ani.SetFinalPosition(getOffset(node).left, getOffset(node).top);
         ani.node = node;
         ani.Init();
         animations.push(ani);
@@ -38,50 +52,3 @@ function InitBlocks()
     return animations;
 }
 
-function GetNewGameInfo()
-{
-    var obj = {};
-    obj.curTime = new Date();
-    obj.startTime = new Date();
-    obj.curNum   = 0;
-    obj.elapsed = "";
-    return obj;
-}
-
-function UpdateTime( gameInfo )
-{
-    gameInfo.curTime = new Date();
-    var ms = gameInfo.curTime - gameInfo.startTime;
-
-    var hours = ms / (1000 * 60 * 60);
-    hours = Math.floor(hours);
-    ms %= (1000 * 60 * 60);
-
-    var minutes = ms / (1000 * 60);
-    minutes = Math.floor(minutes);
-    ms %= (1000 * 60);
-
-    var seconds = ms / 1000;
-    seconds = Math.floor(seconds);
-
-    gameInfo.elapsed = "";
-    if (hours > 10){
-        gameInfo.elapsed = hours + ":";
-    }
-    else if (hours > 0){
-        gameInfo.elapsed = "0" + hours + ":";
-    }
-
-    if (minutes > 10){
-        gameInfo.elapsed += minutes + ":";
-    }
-    else if (minutes > 0){
-        gameInfo.elapsed += "0" + minutes + ":";
-    }
-    if (seconds > 10){
-        gameInfo.elapsed += seconds;
-    }
-    else if (seconds > 0){
-        gameInfo.elapsed += "0" + seconds;
-    }
-}

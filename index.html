@@ -9,6 +9,11 @@
     <script src="js/commons.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <style>
+        .blocks 
+		{
+			font-size: 21px;
+		}
+
         .alink:link {
             color:#000000;
             text-decoration: none;
@@ -31,36 +36,26 @@
 
 <script>
     var blocks = null;
-    var gameInfo = GetNewGameInfo();
-    function StartGame()
+    function Start()
     {
-        gameInfo = GetNewGameInfo();
         blocks = InitBlocks()
-    }
-    function OnNumberClick(a)
-    {
-        var val = a.text;
-        if (val == gameInfo.curNum)
-        {
-            ++gameInfo.curNum;
-        }
-        return false;
     }
 
 </script>
 
-<div id="el1" style="left:10px; top: 10px; position:absolute; background-color: #FEFEF ">
-    Find: <span id="curNum"></span>
-    <BR>
-    <span id="curTime"> -- </span>
-    <BR>
-    <button onclick="StartGame();">Play again!</button>
+<div id="textsrc" style="left:1000px; top: 10px; position:absolute; background-color: #FEFEFE; font-size: 21px;">
+    This is incredibly short text but it would be nice to see all letters animated!
+</div>
+
+<div id="finalstage">
+1234567890
+</div>
+
+<div id="el1" style="left:1000px; top: 10px; position:absolute; background-color: #FEFEFE ">
+    <button onclick="Start();">Play again!</button>
 </div>
 
     <script>
-
-        var timeDisplay  = document.getElementById("curTime");
-        var numDisplay  = document.getElementById("curNum");
 
         var posX = 10;
         function render() {
@@ -81,10 +76,6 @@
                     //break;
                 }
             }
-
-            UpdateTime(gameInfo);
-            timeDisplay.innerText = gameInfo.elapsed;
-            numDisplay.innerText = gameInfo.curNum;
         }
         render();
     </script>
