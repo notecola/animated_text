@@ -35,20 +35,23 @@
 <body>
 
 <script>
+    var ok = false;
     var blocks = null;
     function Start()
     {
-        blocks = InitBlocks()
+        blocks = InitBlocks();
+        ok = true;
     }
 
 </script>
-
-<div id="textsrc" style="left:1000px; top: 10px; position:absolute; background-color: #FEFEFE; font-size: 21px;">
-    This is incredibly short text but it would be nice to see all letters animated!
+<BR/><BR/><BR/><BR/><BR/><BR/><BR/>
+<div id="textsrc" style="left:1000px; bottom: 100px; position:absolute; background-color: #FEFEFE; font-size: 21px;">
+    It only works with relatively small phrases.
+    Say up to 200 symbols.
 </div>
 
-<div id="finalstage">
-1234567890
+<div id="finalstage" style="font-size: 28px;">
+placeholder
 </div>
 
 <div id="el1" style="left:1000px; top: 10px; position:absolute; background-color: #FEFEFE ">
@@ -60,19 +63,20 @@
         var posX = 10;
         function render() {
             requestAnimationFrame(render);
-
+            if (!ok) return;
             if (!blocks) return;
+
 
             for(var i = 0; i < blocks.length; ++i)
             {
                 //i = Math.floor(Math.random() * blocks.length);
                 block = blocks[i];
-                block.Step();
                 if (block.IsFinished())
                 {
-                    block.Init();
+                    //block.Init();
                 }else
                 {
+                    block.Step();
                     //break;
                 }
             }

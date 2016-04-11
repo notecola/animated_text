@@ -201,11 +201,10 @@ RotateZoomAndMoveToThePointAnimation.prototype.Init = function()
 	this.stepId = 0;
     this.curAngle = 0;
     this.curScale = 1.0;
-
-    this.rotateSpeed = 0.5 * (1 - Math.random() * 2);
-    this.moveSpeed = Math.random() * 10;
-    this.scaleSpeedBase = (0.5 - Math.random()) / 100;
-    this.scaleSpeed = this.scaleSpeedBase;
+    this.epsilon = 0.01;
+    this.moveSpeedX = 2 + 5 * Math.random();
+    this.moveSpeedY = 2 + 5 * Math.random();
+    this.scaleSpeed = (0.5 - Math.random()) / 100;
     this.scaleMax = 1 + 1 * Math.random();
     this.scaleMin = 0.2;
 
@@ -220,6 +219,72 @@ RotateZoomAndMoveToThePointAnimation.prototype.Init = function()
     //this.node.style.color=getColor();
 }
 
+RotateZoomAndMoveToThePointAnimation.prototype.StepScale = function()
+{
+    var dscale = 1.0 - this.curScale;
+
+    this.scaleSpeed = 0.01 * dscale * Math.random();
+    if (Math.abs(dscale) > this.epsilon)
+    {
+        this.curScale += this.scaleSpeed;
+        this.node.style.webkitTransform = 'scale(' + this.curScale + ')';
+    }
+    else {
+        this.curScale = 1.0;
+        this.node.style.webkitTransform = 'scale(' + this.curScale + ')';
+    }
+}
+
+RotateZoomAndMoveToThePointAnimation.prototype.StepPosition = function()
+{
+    var dy = this.finalY - this.curY;
+    var dx = this.finalX - this.curX;
+    this.moveSpeedY = (this.finalY - this.curY) / 100;
+    this.moveSpeedX = (this.finalX - this.curX) / 100;
+
+    if (Math.abs(dy) < 2)
+    {
+        this.curY = this.finalY;
+    }
+    if (Math.abs(dx) < 2)
+    {
+        this.curX = this.finalX;
+    }
+    if (Math.abs(dy) < 1 && Math.abs(dx) < 1)
+    {
+        this.curX = this.finalX;
+        this.curY = this.finalY;
+        this.node.style.left = this.curX  + 'px'; // show frame
+        this.node.style.top = this.curY  + 'px'; // show frame
+        return;
+    }
+    else {
+        if (Math.abs(dy) > 1)
+        {
+            this.curY += this.moveSpeedY;
+        }
+        if (Math.abs(dx) > 1)
+        {
+            this.curX += this.moveSpeedX;
+        }
+    }
+
+    this.node.style.left = this.curX  + 'px'; // show frame
+    this.node.style.top = this.curY  + 'px'; // show frame
+}
+
+RotateZoomAndMoveToThePointAnimation.prototype.StepAngle= function()
+{
+    var da = (this.curAngle % (360.0));
+    var dy = this.finalY - this.curY;
+    var dx = this.finalX - this.curX;
+    if (Math.abs(dy) > 2 || Math.abs(dx) > 2 || Math.abs(da) > 5)
+    {
+        this.curAngle += this.rotateSpeed;
+        this.node.style.webkitTransform += 'rotate(' + this.curAngle + 'deg) ';
+    }
+}
+
 RotateZoomAndMoveToThePointAnimation.prototype.Step = function()
 {
 	if (this.stepId == 0)
@@ -228,68 +293,31 @@ RotateZoomAndMoveToThePointAnimation.prototype.Step = function()
 	    var y = Math.floor(window.innerHeight * (0.95 * Math.random()));
 		this.curX = x;
 		this.curY = y;
-	    this.node.style.left = x  + 'px'; // show frame
+        this.curScale = 2 + Math.random() * (this.scaleMax - this.scaleMin);
+        this.curAngle = 360.0 * Math.random();
+        this.rotateSpeed = 5 * (2 - 4 * Math.random());
+        this.scaleSpeed = ((0.1 * (1 - this.curScale)) * Math.random());
+        this.moveSpeedY = (this.curY  -this.finalY ) / 100;
+        this.moveSpeedX = (this.curX - this.finalX) / 100;
+        this.node.style.position = "absolute";
+        this.node.style.left = x  + 'px'; // show frame
 	    this.node.style.top = y + 'px'; // show frame
-	}
-	++this.stepId;
-
-    if (Math.abs(this.curY - this.finalY) < 1 && Math.abs(this.curX - this.finalX) < 1)
-    {
+        this.node.style.webkitTransform = 'scale(' + this.curScale + ')';
+        this.node.style.webkitTransform = 'rotate(' + this.curAngle + 'deg) ';
+        ++this.stepId;
         return;
-    }
-    else {
-		this.node.style.position = "absolute";
-        var dY = this.finalY - this.curY;
-        if (dY > this.moveSpeed)
-        {
-            this.curY += this.moveSpeed;
-        }
-        else if (dY < this.moveSpeed && dY > 0){
-            this.curY += 1;
-        }
-        else if (-dY > this.moveSpeed)
-        {
-            this.curY -= this.moveSpeed;
-        }
-        else if (-dY < this.moveSpeed && dY < 0){
-            this.curY -= 1;
-        }
-
-        var dX = this.finalX - this.curX;
-        if (dX > this.moveSpeed)
-        {
-            this.curX += this.moveSpeed;
-        }
-        else if (dX < this.moveSpeed && dX > 0){
-            this.curX += 1;
-        }
-        else if (-dX > this.moveSpeed)
-        {
-            this.curX -= this.moveSpeed;
-        }
-        else if (-dX < this.moveSpeed && dX < 0){
-            this.curX -= 1;
-        }
-        this.curAngle += this.rotateSpeed;
-    }
-
-    if (this.curScale >= this.scaleMax)
-    {
-        this.scaleSpeed =  (-1) * this.scaleSpeedBase;
-    }
-    else if (this.curScale < this.scaleMin)
-    {
-        this.scaleSpeed =  (+1) * this.scaleSpeedBase;
-    }
-
-    this.curScale += this.scaleSpeed;
-    this.node.style.left = this.curX  + 'px'; // show frame
-    this.node.style.top = this.curY  + 'px'; // show frame
-    this.node.style.webkitTransform = 'rotate(' + this.curAngle + 'deg) ';
-    this.node.style.webkitTransform += 'scale(' + this.curScale + ')';
+	}
+    this.node.style.webkitTransform = "";
+    this.StepScale();
+    this.StepPosition();
+    this.StepAngle();
 }
 
 RotateZoomAndMoveToThePointAnimation.prototype.IsFinished = function()
 {
-    return (this.curY > this.maxY * 0.9);
+    var dscale = this.curScale - 1.0;
+    var dy = this.finalY - this.curY;
+    var dx = this.finalX - this.curX;
+    var da = Math.abs(this.curAngle % (360.0));
+    return (Math.abs(dy) < 1 && Math.abs(dx) < 1 && Math.abs(dscale) < this.epsilon && (da < this.epsilon));
 }

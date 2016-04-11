@@ -35,7 +35,7 @@ function InitBlocks()
     var animations = [];
     var strText = document.getElementById("textsrc").innerText;
     var finalStage = document.getElementById("finalstage");
-
+    finalStage.innerHTML = "";
     for(var i = 0; i < strText.length; ++i){
         var c = strText[i];
 
