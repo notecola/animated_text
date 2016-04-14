@@ -9,11 +9,6 @@
     <script src="js/commons.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <style>
-        .blocks 
-		{
-			font-size: 21px;
-		}
-
         .alink:link {
             color:#000000;
             text-decoration: none;
@@ -44,18 +39,18 @@
     }
 
 </script>
-<BR/><BR/><BR/><BR/><BR/><BR/><BR/>
-<div id="textsrc" style="left:1000px; bottom: 100px; position:absolute; background-color: #FEFEFE; font-size: 21px;">
-    It only works with relatively small phrases.
-    Say up to 200 symbols.
+
+<div style="margin-top:20px; margin-bottom:20px; width:100%; text-align:center">
+    <button onclick="Start();">Animate</button>
 </div>
 
-<div id="finalstage" style="font-size: 28px;">
-placeholder
+<div id="textsrc" style="display: none">
+    Every child you encounter is a divine appointment...
 </div>
 
-<div id="el1" style="left:1000px; top: 10px; position:absolute; background-color: #FEFEFE ">
-    <button onclick="Start();">Play again!</button>
+
+<div id="finalstage0" style="width:100%; height: 300px; left:0; right:0; border:1px; top:0; bottom:0; margin:auto; max-width:100%; max-height:100%; overflow:auto; font-size: 36pt;">
+    <span id="finalstage"></span>
 </div>
 
     <script>

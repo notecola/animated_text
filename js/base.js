@@ -190,7 +190,7 @@ RotateZoomAndMoveToThePointAnimation.prototype.SetFinalPosition = function(x, y)
 {
     this.finalX = x;
     this.finalY = y;
-	console.log("x: " + x + " y: " + y);
+//	console.log("x: " + x + " y: " + y);
 }
 
 RotateZoomAndMoveToThePointAnimation.prototype.Init = function()
@@ -205,7 +205,7 @@ RotateZoomAndMoveToThePointAnimation.prototype.Init = function()
     this.moveSpeedX = 2 + 5 * Math.random();
     this.moveSpeedY = 2 + 5 * Math.random();
     this.scaleSpeed = (0.5 - Math.random()) / 100;
-    this.scaleMax = 1 + 1 * Math.random();
+    this.scaleMax = 2 + 1 * Math.random();
     this.scaleMin = 0.2;
 
 
@@ -295,7 +295,8 @@ RotateZoomAndMoveToThePointAnimation.prototype.Step = function()
 		this.curY = y;
         this.curScale = 2 + Math.random() * (this.scaleMax - this.scaleMin);
         this.curAngle = 360.0 * Math.random();
-        this.rotateSpeed = 5 * (2 - 4 * Math.random());
+        this.rotateSpeed = (1 - 2 * Math.random());
+        this.rotateSpeed *= 10;
         this.scaleSpeed = ((0.1 * (1 - this.curScale)) * Math.random());
         this.moveSpeedY = (this.curY  -this.finalY ) / 100;
         this.moveSpeedX = (this.curX - this.finalX) / 100;
